@@ -7,12 +7,14 @@ import {
 	HttpStatus,
 	Param,
 	Post,
+	UseGuards,
 	UsePipes,
 	ValidationPipe,
 } from '@nestjs/common';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { REVIEW_NOT_FOUND } from './review.constants';
 import { ReviewService } from './review.service';
+import { JwtAuthGuards } from '../auth/guards/jwt.guards';
 
 @Controller('review')
 export class ReviewController {
@@ -32,6 +34,7 @@ export class ReviewController {
 		}
 	}
 
+	@UseGuards(JwtAuthGuards)
 	@Get('byProduct/:productId')
 	async getByProduct(@Param('productId') productId: string) {
 		return this.reviewService.findByProductId(productId);
